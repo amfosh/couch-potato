@@ -31,6 +31,17 @@ class ApplicationController < Sinatra::Base
     end
   end
 
+  post '/signup' do
+    @user = User.new(params)
+    if @user.save && !params[:username].empty? && !params[:email].empty?
+        @user.save
+        session[:user_id] = @user.id
+        redirect '/shows'
+    else
+        redirect '/signup'
+    end
+end
+
   get '/login' do
     if logged_in?
         redirect "/tweets"
@@ -48,4 +59,13 @@ post '/login' do
         redirect '/signup'
     end
   end
+
+get '/shows' do
+  @shows = Show.all 
+  if logged_in?
+    erb:"shows/shows"
+  else
+    redirect "/login"
+  end
+end
 end
