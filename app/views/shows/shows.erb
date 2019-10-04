@@ -1,5 +1,8 @@
 <h1> Welcome, Couch Potato!</h1><br><br>
 <h4>What do you want to watch?</h4>
 <%@shows.each do |show|%>
-  <p><%=show.content%></p><br>
-<%end%>
+<%=show.show_title%>
+<%end%><br><br>
+
+<p><a href="/shows/edit">Edit Show</a><br>
+<a href="/shows/new">Add A Show</a></p>

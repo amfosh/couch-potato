@@ -1,7 +1,7 @@
 require './config/environment'
 
 class ApplicationController < Sinatra::Base
-
+  
   configure do
     set :public_folder, 'public'
     set :views, 'app/views'
@@ -50,7 +50,7 @@ end
     end
 end
   
-post '/login' do
+  post '/login' do
     user = User.find_by(username: params[:username])
     if user && user.authenticate(params[:password])
         session[:user_id] = user.id
@@ -60,10 +60,52 @@ post '/login' do
     end
   end
 
-get '/shows' do
-  @shows = Show.all 
-  if logged_in?
-    erb:"shows/shows"
+  get "/logout" do
+    session.clear
+    redirect "/login"
+  end
+
+  get '/users/:slug' do
+    @user = User.find_by_slug(params[:slug])
+    @tweets =  @user.shows
+    erb :'/users/show'
+  end
+
+  get '/shows' do
+    @shows = Show.all 
+    if logged_in?
+      erb:"shows/shows"
+    else
+      redirect "/login"
+    end
+  end
+
+  get '/shows/new' do
+    if logged_in?
+        erb :'/shows/new'
+    else
+        redirect "/login"
+    end
+  end
+
+  post '/shows' do
+    if !params[:show_title].empty?
+      @show = Show.create(show_title: params[:show_title])
+    else
+        redirect "/shows/new"
+    end
+
+    if logged_in?
+        @show.user_id = current_user.id
+        @show.save
+    end
+    redirect "/shows"
+  end
+
+  get '/shows/:id' do
+    @show = Show.find(params[:id])
+    if logged_in?
+    erb :"/shows/show"
   else
     redirect "/login"
   end
