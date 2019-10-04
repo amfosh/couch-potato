@@ -40,15 +40,15 @@ class ApplicationController < Sinatra::Base
     else
         redirect '/signup'
     end
-end
+  end
 
   get '/login' do
     if logged_in?
-        redirect "/tweets"
+        redirect "/shows"
     else 
       erb :"/users/login"
     end
-end
+  end
   
   post '/login' do
     user = User.find_by(username: params[:username])
@@ -67,7 +67,7 @@ end
 
   get '/users/:slug' do
     @user = User.find_by_slug(params[:slug])
-    @tweets =  @user.shows
+    @shows =  @user.shows
     erb :'/users/show'
   end
 
@@ -108,6 +108,37 @@ end
     erb :"/shows/show"
   else
     redirect "/login"
+  end 
+end
+
+  get '/shows/:id/edit' do
+    if logged_in?
+      @show = Show.find(params[:id])
+    if @show.user_id == current_user.id
+      erb :'shows/edit'
+    else
+      redirect "/shows"
+    end
+  end
+end
+
+  patch '/shows/:id' do
+    @show = Show.find(params[:id])
+    @show.update(show_title: params[:show_title])
+  if !@show.show_title.empty?
+    redirect "/shows/#{@show.id}"
+  else
+    redirect "/shows/#{@show.id}/edit"
+  end
+end
+
+  delete '/shows/:id/delete' do
+    @show = Show.find(params[:id])
+  if logged_in? && @show.user_id == current_user.id
+      @show.destroy
+      redirect "/shows"
+  else
+      redirect "/login"
   end
 end
 end

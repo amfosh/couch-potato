@@ -1,0 +1,10 @@
+<h2>Show:</h2>
+<p><%=@show.show_title%></p>
+ <br>
+
+<h3>Edit Show:</h3><br>
+<form method="post" action="/shows/<%=@show.id%>">
+  <input id="hidden" type="hidden" name="_method" value="patch">
+  <input type="text" name="show_title">
+  <input type="submit" value="submit">
+</form>
