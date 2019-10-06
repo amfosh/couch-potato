@@ -1,11 +1,8 @@
-<p><%=@show.show_title%></p>
+<h2><%=@show.show_title%></h2>
 <form action="/shows/<%=@show.id %>/delete" method="post">
   <input id="hidden" type="hidden" name="_method" value="delete">
   <input type="submit" value="Delete Show">
-</form>
-
-<br>
-
+</form> 
 <form action="/shows/<%=@show.id%>/edit" method="get">
   <input type="submit" value="Edit Show">
 </form>
