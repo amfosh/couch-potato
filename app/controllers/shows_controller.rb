@@ -30,18 +30,9 @@ class ShowsController < ApplicationController
     redirect "/shows"
   end
 
-  get '/shows/:id' do
-    @show = Show.find(params[:id])
-    if logged_in?
-    erb :"/shows/show"
-  else
-    redirect "/login"
-  end
-end 
-
 get '/shows/:id/edit' do
     if logged_in?
-      @show = Show.find(params[:id])
+      @show = Show.find_by_id(params[:id])
     if @show.user_id == current_user.id
       erb :'shows/edit'
     else
@@ -51,7 +42,7 @@ end
 end
 
   patch '/shows/:id' do
-    @show = Show.find(params[:id])
+    @show = Show.find_by_id(params[:id])
     @show.update(show_title: params[:show_title])
   if !@show.show_title.empty?
     redirect "/shows/#{@show.id}"
@@ -60,8 +51,17 @@ end
   end
 end
 
+get '/shows/:id' do
+    @show = Show.find_by(id: params[:id])
+    if logged_in?
+    erb :"/shows/show"
+  else
+    redirect "/login"
+  end
+end 
+
   delete '/shows/:id/delete' do
-    @show = Show.find(params[:id])
+    @show = Show.find_by_id(params[:id])
   if logged_in? && @show.user_id == current_user.id
       @show.destroy
       redirect "/shows"
