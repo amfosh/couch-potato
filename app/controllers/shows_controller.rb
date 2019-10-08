@@ -1,7 +1,9 @@
 class ShowsController < ApplicationController
+  
   get '/shows' do
-    @shows = Show.all 
     if logged_in?
+      @user = current_user
+      @shows = current_user.shows 
       erb:"shows/shows"
     else
       redirect "/login"
@@ -17,18 +19,25 @@ class ShowsController < ApplicationController
   end
 
   post '/shows' do
-    if !params[:show_title].empty?
-      @show = Show.create(show_title: params[:show_title])
+    @s = current_user.shows.build(params)
+    if @s.save
+      redirect "/shows"
     else
-        redirect "/shows/new"
+      erb :"shows/new"
     end
-
-    if logged_in?
-        @show.user_id = current_user.id
-        @show.save
-    end
-    redirect "/shows"
   end
+  #   if !params[:show_title].empty?
+  #     @show = Show.create(show_title: params[:show_title])
+  #   else
+  #       redirect "/shows/new"
+  #   end
+
+  #   if logged_in?
+  #       @show.user_id = current_user.id
+  #       @show.save
+  #   end
+  #   redirect "/shows"
+  # end
 
 get '/shows/:id/edit' do
     if logged_in?
