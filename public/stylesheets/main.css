@@ -13,7 +13,8 @@
 
   /* --- Welcome Page Styles --- */
   body {
-    background-image: url('images/potato-wallpaper.jpg')
+    background-image: url("/images/potato-wallpaper.jpg");
+    background-attachment: fixed;
     background-color: lightblue;
     color: #333;
     font-family: 'Montserrat', sans-serif;

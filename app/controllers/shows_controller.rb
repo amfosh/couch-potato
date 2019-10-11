@@ -26,18 +26,6 @@ class ShowsController < ApplicationController
       erb :"shows/new"
     end
   end
-  #   if !params[:show_title].empty?
-  #     @show = Show.create(show_title: params[:show_title])
-  #   else
-  #       redirect "/shows/new"
-  #   end
-
-  #   if logged_in?
-  #       @show.user_id = current_user.id
-  #       @show.save
-  #   end
-  #   redirect "/shows"
-  # end
 
 get '/shows/:id/edit' do
     if logged_in?
