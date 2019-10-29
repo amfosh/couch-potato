@@ -1,4 +1,13 @@
 class ShowsController < ApplicationController
+
+  helpers do
+    def redirect_if_not_authorized
+      @show = Show.find_by_id(params[:id])
+      if current_user != @show.user
+        redirect '/shows'
+      end
+    end
+  end
   
   get '/shows' do
     if logged_in?
@@ -39,13 +48,18 @@ end
 end
 
   patch '/shows/:id' do
-    @show = Show.find_by_id(params[:id])
-    @show.update(show_title: params[:show_title])
-  if !@show.show_title.empty?
-    redirect "/shows/#{@show.id}"
-  else
-    redirect "/shows/#{@show.id}/edit"
-  end
+    redirect_if_not_authorized
+
+    
+    if !params[:show_title].empty? && params[:show_title].length > 2
+      @show.update(show_title: params[:show_title])
+      redirect "/shows/#{@show.id}"
+    else
+      @error = "The tile isn't long enough"
+      @show.show_title = params[:show_title]
+      erb:"/shows/edit"
+    end
+
 end
 
 get '/shows/:id' do

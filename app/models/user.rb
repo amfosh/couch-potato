@@ -3,7 +3,6 @@ class User < ActiveRecord::Base
     validates :username, :email, presence: true
     validates :username, :email, uniqueness: true
     has_many :shows
-    
     def slug
         self.username.downcase.split.join("-")
     end
