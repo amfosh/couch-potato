@@ -55,7 +55,7 @@ end
       @show.update(show_title: params[:show_title])
       redirect "/shows/#{@show.id}"
     else
-      @error = "The tile isn't long enough"
+      @error = "The title isn't long enough!"
       @show.show_title = params[:show_title]
       erb:"/shows/edit"
     end
