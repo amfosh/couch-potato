@@ -9,11 +9,11 @@ gem 'thin'
 gem 'bcrypt'
 gem 'foreman'
 gem 'rails_12factor'
-gem 'dotenv'
 
 group :development do
   gem 'sqlite3', '<1.4'
   gem 'shotgun'
+  gem 'dotenv'
   gem 'tux'
   gem 'pry'
 end
